@@ -1,23 +1,66 @@
-# drawing_with_fourier_series
+# Fourier Series Drawing
 
-Using Complex Fourier Series, we can draw outlined images. Here I am accomplishing it with python. 
+Animated drawing of image outlines using the Complex Fourier Series — implemented in Python with NumPy, SciPy, and matplotlib.
 
-First, we need discrete points on the outline path we want to draw. I am using svg file to get that. To read the svg file and grab the path string use: `read_svg()`.
-One thing to notice is, those discrete points will create an image mirrored with respect to (w.r.t) the x-axis.
+## Tech Stack
 
-![raw points on the outline, which is mirrored w.r.t the x-axis.](./assets/raw_points.png)
+| Category | Libraries |
+|---|---|
+| **Numerical** | `numpy`, `scipy` (FFT) |
+| **Visualization** | `matplotlib` (animation), `pillow` |
+| **Image Processing** | `opencv-python` (contour extraction) |
+| **SVG** | `svg-path`, `svgwrite` |
+| **Package Manager** | `uv` |
 
-`create_discrete_points()` will automatically fix this. 
+## Overview
 
-![fixed image](./assets/points_mirrored_x.png)
+The pipeline converts an image outline into discrete complex points, applies the Discrete Fourier Transform (via FFT), and reconstructs the shape by summing the Fourier series — drawing circles that rotate at each frequency component.
 
-Now performing the DFT on those points will give us the Complex Frequencies present in
-those points. This can be done with `dft()` function.
+Two approaches exist in this repo:
 
-Then using those complex frequencies we can recreate the given signal. 
-`draw_with_coefficients()` does exactly that and its animated. 
-Change `animated = False` to just create the output.
+### New (`src/`) — modular, FFT-based, raster + SVG support
 
-![150 Circles](./assets/150Circles.png)
+- `src/draw_with_circle.py` — Core `DrawWithCircles` class
+- `src/png_to_discrete.py` — Extract contour from PNG/JPG via OpenCV
+- `src/utils.py` — Shared helpers (`ComplexPoint`, SVG parsing, sampling)
+- `main.py` — Entry point
 
-![Fourier Series creating maple leaf animation](./assets/maple.gif)
+```python
+from src.draw_with_circle import DrawWithCircles
+dwc = DrawWithCircles("./images_to_try/gear.jpg", 300)
+dwc.draw()
+```
+
+Supports both SVG files and raster images (PNG/JPG). Uses `scipy.fft.fft` for O(N log N) performance and `FuncAnimation` + `PillowWriter` to export animated GIFs.
+
+### Old (`components.py`) — monolithic, O(N²) DFT, SVG-only
+
+Legacy single-file implementation with a naive double-loop DFT and interactive `plt.pause()` animation.
+
+## Examples
+
+| Gear | Iron Man |
+|---|---|
+| ![gear](assets/gear.gif) | ![iron man](assets/iron_man.gif) |
+
+| Batman | Maple Leaf |
+|---|---|
+| ![batman](assets/bat_man.gif) | ![maple leaf](assets/maple.gif) |
+
+| Iron Man Head |
+|---|
+| ![iron man head](assets/iron_man_head.gif) |
+
+Static outputs are also available in `assets/` (`.png` files).
+
+## Usage
+
+```bash
+uv run main.py
+```
+
+To try different images, change the path and point count in `main.py`:
+
+```python
+dwc = DrawWithCircles("./images_to_try/<your_image>", n_points=300)
+```
