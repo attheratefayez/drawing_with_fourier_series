@@ -45,13 +45,15 @@ Legacy single-file implementation with a naive double-loop DFT and interactive `
 
 | Batman | Maple Leaf |
 |---|---|
-| ![batman](assets/bat_man.gif) | ![maple leaf](assets/maple.gif) |
+| ![batman](assets/bat_man.gif) | ![maple leaf](assets/maple_leaf.gif) |
 
-| Iron Man Head |
+| Iron Man Head | Gripper |
+|---|---|
+| ![iron man head](assets/iron_man_head.gif) | ![gripper](assets/gripper.gif) |
+
+| Pieeee |
 |---|
-| ![iron man head](assets/iron_man_head.gif) |
-
-Static outputs are also available in `assets/` (`.png` files).
+| ![pieeee](assets/pieeee.gif) |
 
 ## Usage
 
