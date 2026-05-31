@@ -1,6 +1,6 @@
 from src.draw_with_circle import DrawWithCircles
 
-dwc = DrawWithCircles("./images_to_try/gear.jpg", 300)
+dwc = DrawWithCircles("/home/fayez/Bugs/pythonworks/dft_drawing/images_to_try/svg_files/Maple_Leaf.svg", 300)
 dwc.draw()
 
 

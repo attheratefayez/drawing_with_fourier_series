@@ -95,10 +95,15 @@ class DrawWithCircles:
 
         (line,) = ax.plot([], [])
 
-        neg_limit = -1
-        pos_limit = 1
-        ax.set_xlim(neg_limit, pos_limit)
-        ax.set_ylim(neg_limit, pos_limit)
+        padding = 0.3
+        real = self.__discrete_signal.real
+        imag = self.__discrete_signal.imag
+        r_min, r_max = real.min(), real.max()
+        i_min, i_max = imag.min(), imag.max()
+        r_span = r_max - r_min or 1
+        i_span = i_max - i_min or 1
+        ax.set_xlim(r_min - padding * r_span, r_max + padding * r_span)
+        ax.set_ylim(i_min - padding * i_span, i_max + padding * i_span)
 
         drawn_points = np.array([], dtype=np.complex64)
 
